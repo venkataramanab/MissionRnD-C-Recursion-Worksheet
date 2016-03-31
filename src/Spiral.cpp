@@ -33,8 +33,42 @@ Note : Check the function Parameters ,Its a double pointer .
 
 #include "stdafx.h"
 #include<stdlib.h>
-
+#define min(rows,cols) rows < cols ? rows : cols
+int* spiralArr(int **arr, int *res, int rows, int cols, int startPt, int curPos);
 int *spiral(int rows, int columns, int **input_array)
 {
-	return NULL;
+	if ((rows > 0) && (columns > 0) && input_array){
+		int *res = NULL;
+		res=spiralArr(input_array, res, rows, columns, 0, 0);
+		return res;
+	}
+	return 0;
+}
+int* spiralArr(int **arr, int *res, int rows, int cols, int startPt, int curPos){
+	if (startPt <= ((min(rows,cols) / 2) + (min(rows,cols) % 2))){
+		//right move
+		for (int i = startPt; i < cols; i++){
+			res = (int *)realloc(res, sizeof(int)*(curPos + 1));
+			res[curPos++] = arr[startPt][i];
+		}
+		//down move
+		cols--;
+		for (int i = startPt + 1; i < rows; i++){
+			res = (int*)realloc(res, sizeof(int)*(curPos + 1));
+			res[curPos++] = arr[i][cols];
+		}
+		//left move
+		rows--;
+		for (int i = cols - 1; i >= startPt; i--){
+			res = (int*)realloc(res, sizeof(int)*(curPos + 1));
+			res[curPos++] = arr[rows][i];
+		}
+		//top move
+		for (int i = rows - 1; i>startPt; i--){
+			res = (int*)realloc(res, sizeof(int)*(curPos + 1));
+			res[curPos++] = arr[i][startPt];
+		}
+		res=spiralArr(arr, res, rows, cols, startPt + 1, curPos);
+	}
+	return res;
 }

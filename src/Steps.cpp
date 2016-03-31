@@ -25,5 +25,11 @@
 
 int get_steps(int s)
 {
-	return 0;
+	if (s>1){
+		return get_steps(s - 1) + get_steps(s - 2);//for nth step it is sum of ways from (n-1)th step and (n-2)th step
+	}
+	else if (s == 1){
+		return 1;								//we know for the first step it can be reached in only one way
+	}
+	//this automatically returns 0 fails both if
 }

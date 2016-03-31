@@ -34,9 +34,49 @@ more parameters .
 */
 
 #include<stdlib.h>
-
-
+#define visited 2
+int* dupMaze(int *maze, int rows, int cols);
+int pathFinder(int *maze, int rows, int cols, int xPtr, int yPtr, int xDest, int yDest);
+bool validPos(int rows, int cols, int x, int y, int *maze);
 int path_exists(int *maze, int rows, int columns, int x1, int y1, int x2, int y2)
 {
-	return 1;
+	if (validPos(rows, columns, x1, y1, maze) && validPos(rows, columns, x2, y2, maze)){
+		int *newMaze = dupMaze(maze, rows, columns);
+		return pathFinder(newMaze, rows, columns, x1, y1, x2, y2);
+	}
+	return 0;
+}
+int pathFinder(int *maze, int rows, int cols, int xPtr, int yPtr, int xDest, int yDest){
+	*(maze + xPtr*cols + yPtr) = visited;
+	if (xPtr == xDest && yPtr == yDest){
+		return 1;
+	}
+	if (*(maze + (xPtr + 1)*cols + yPtr) != visited && validPos(rows, cols, xPtr + 1, yPtr, maze)){
+		return pathFinder(maze, rows, cols, xPtr + 1, yPtr, xDest, yDest);
+	}
+	else if (*(maze + xPtr*cols + yPtr + 1) != visited && validPos(rows, cols, xPtr, yPtr + 1, maze)){
+		return pathFinder(maze, rows, cols, xPtr, yPtr + 1, xDest, yDest);
+	}
+	else if (*(maze + xPtr*cols + yPtr - 1) != visited && validPos(rows, cols, xPtr, yPtr - 1, maze)){
+		return pathFinder(maze, rows, cols, xPtr, yPtr - 1, xDest, yDest);
+	}
+	else if (*(maze + (xPtr - 1)*cols + yPtr) != visited && validPos(rows, cols, xPtr - 1, yPtr, maze)){
+		return pathFinder(maze, rows, cols, xPtr - 1, yPtr, xDest, yDest);
+	}
+}
+bool validPos(int rows, int cols, int x, int y, int *maze){
+	if (x >= 0 && x < rows && y >= 0 && y < cols && *(maze + x*cols + y)){
+		return true;
+	}
+	return false;
+}
+int* dupMaze(int *maze, int rows, int cols){
+	int *newMaze = NULL;
+	for (int i = 0; i < rows; i++){
+		for (int j = 0; j < cols; j++){
+			newMaze = (int*)realloc(newMaze, sizeof(int)*(cols*i + j + 1));
+			newMaze[cols*i + j] = maze[cols*i + j];
+		}
+	}
+	return newMaze;
 }

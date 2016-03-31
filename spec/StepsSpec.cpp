@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ #include "stdafx.h"
 
 
 #include "./../src/Steps.cpp"
@@ -75,8 +75,8 @@ namespace spec
 		{
 			int n = 0,i=0;
 			int result = get_steps(0);
-			int inputs[6] = { 3, 5, 7, 9, 10, 12 };
-			int answers[6] = { 3, 8, 21, 55, 89, 233 };
+			int inputs[7] = { 2,3, 5, 7, 9, 10, 12 };
+			int answers[7] = { 2,3, 8, 21, 55, 89, 233 };
 			for (i = 0; i < 6; i++){
 				Assert::AreEqual(answers[i],get_steps(inputs[i]), L"Failed for either 3,5,7,9,10,12", 1, 2);
 			}
